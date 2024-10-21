@@ -116,7 +116,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Fuentes de luz Fernando", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Proyecto Final CGIH6 Equipo 5", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -156,6 +156,12 @@ int main()
 	
 	Model Dog((char*)"Models/Models/Barda/Barda.obj");
 	Model Piso((char*)"Models/Models/Piso/Piso.obj");
+	Model PisoFut((char*)"Models/Models/PisoFutbol/pisoFut.obj");
+	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
+	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
+	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
+	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
+	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
 
 
 
@@ -178,7 +184,7 @@ int main()
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.difuse"), 0);
 	glUniform1i(glGetUniformLocation(lightingShader.Program, "Material.specular"), 1);
 
-	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 200.0f);
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -304,6 +310,9 @@ int main()
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
+		PisoBask.Draw(lightingShader);
+		PisoFut.Draw(lightingShader);
+		Estacionamientos.Draw(lightingShader);
 
 
 	
@@ -313,6 +322,9 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 	    Dog.Draw(lightingShader);
+	    RejaFut.Draw(lightingShader);
+	    RejaBask.Draw(lightingShader);
+	    Tsuru.Draw(lightingShader);
 		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
@@ -365,27 +377,27 @@ void DoMovement()
 	// Camera controls
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
 	{
-		camera.ProcessKeyboard(FORWARD, deltaTime * 2);
+		camera.ProcessKeyboard(FORWARD, deltaTime * 4);
 
 	}
 
 	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
 	{
-		camera.ProcessKeyboard(BACKWARD, deltaTime * 2);
+		camera.ProcessKeyboard(BACKWARD, deltaTime * 4);
 
 
 	}
 
 	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
 	{
-		camera.ProcessKeyboard(LEFT, deltaTime * 2);
+		camera.ProcessKeyboard(LEFT, deltaTime * 4);
 
 
 	}
 
 	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
 	{
-		camera.ProcessKeyboard(RIGHT, deltaTime * 2);
+		camera.ProcessKeyboard(RIGHT, deltaTime * 4);
 
 
 	}

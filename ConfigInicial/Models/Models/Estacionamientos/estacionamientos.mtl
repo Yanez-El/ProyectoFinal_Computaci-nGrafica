@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 20.10.2024 17:21:37
+# File Created: 20.10.2024 19:05:33
 
-newmtl Material__257
+newmtl Material__283
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -12,5 +12,5 @@ newmtl Material__257
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka metalBarda.png
-	map_Kd metalBarda.png
+	map_Ka estacionamiento.png
+	map_Kd estacionamiento.png
