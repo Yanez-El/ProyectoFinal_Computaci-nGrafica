@@ -4,6 +4,8 @@
 	19 de septiembre de 2024
 */
 
+//Este es un comentario. ¿Al ejecutar este archivo tendría que ver algo como en la captura del documento de avances?
+
 #include <iostream>
 #include <cmath>
 
