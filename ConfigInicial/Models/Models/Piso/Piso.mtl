@@ -12,5 +12,5 @@ newmtl Material__25
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\Fernando\Documents\PFinal\Models\Piso\PisoProyecto.png
-	map_Kd C:\Users\Fernando\Documents\PFinal\Models\Piso\PisoProyecto.png
+	map_Ka PisoProyecto.png
+	map_Kd PisoProyecto.png
