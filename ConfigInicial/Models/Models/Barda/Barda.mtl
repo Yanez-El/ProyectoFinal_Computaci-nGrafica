@@ -12,5 +12,5 @@ newmtl Material__257
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka C:\Users\Fernando\Documents\PFinal\Models\Barda\metalBarda.png
-	map_Kd C:\Users\Fernando\Documents\PFinal\Models\Barda\metalBarda.png
+	map_Ka metalBarda.png
+	map_Kd metalBarda.png
