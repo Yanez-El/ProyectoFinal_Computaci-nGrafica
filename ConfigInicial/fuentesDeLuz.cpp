@@ -163,6 +163,10 @@ int main()
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
 	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
 
+	//Contenedor
+	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
+	Model hotel((char*)"Models/Models/hotel/hotel.obj");
+
 
 
 	// First, set the container's VAO (and VBO)
@@ -314,7 +318,6 @@ int main()
 		PisoFut.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
 
-
 	
 		model = glm::mat4(1);
 		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
@@ -324,7 +327,13 @@ int main()
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
+
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
+		contenedor.Draw(lightingShader);
+		hotel.Draw(lightingShader);
+
+
 		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
