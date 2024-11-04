@@ -346,6 +346,14 @@ int main()
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
 	    Tsuru.Draw(lightingShader);
+
+
+
+
+
+
+
+
 		Alberca.Draw(lightingShader);
 		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "color.a"), 0.3);
