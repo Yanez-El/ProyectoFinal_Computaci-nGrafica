@@ -9,6 +9,27 @@
 
 // Other Libs
 #include "stb_image.h"
+#include <iostream>
+#include <cmath>
+
+// GLEW
+#include <GL/glew.h>
+
+// GLFW
+#include <GLFW/glfw3.h>
+
+// Other Libs
+#include "stb_image.h"
+
+// GLM Mathematics
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+// Other includes
+#include "Shader.h"
+#include "Camera.h"
+#include "Mesh.h"
 
 // GLM Mathematics
 #include <glm/glm.hpp>
@@ -30,7 +51,7 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 
 // Window dimensions
-const GLuint WIDTH = 800, HEIGHT = 600;
+const GLuint WIDTH = 1280, HEIGHT = 720;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
 
 // Camera
@@ -96,7 +117,6 @@ float vertices[] = {
 };
 
 
-
 glm::vec3 Light1 = glm::vec3(0);
 
 
@@ -158,6 +178,8 @@ int main()
 	Model Piso((char*)"Models/Models/Piso/Piso.obj");
 	Model PisoFut((char*)"Models/Models/PisoFutbol/pisoFut.obj");
 	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
+	Model Alberca((char*)"Models/Models/AlberK/Alberca.obj");
+	Model AguAlberca((char*)"Models/Models/AlberK/Agua.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
@@ -317,7 +339,6 @@ int main()
 
 	
 		model = glm::mat4(1);
-		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
@@ -325,6 +346,10 @@ int main()
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
 	    Tsuru.Draw(lightingShader);
+		Alberca.Draw(lightingShader);
+		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "color.a"), 0.3);
+		AguAlberca.Draw(lightingShader);
 		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
