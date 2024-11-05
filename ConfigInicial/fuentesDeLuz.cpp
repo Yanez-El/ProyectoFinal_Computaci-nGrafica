@@ -12,6 +12,11 @@
 #include <iostream>
 #include <cmath>
 
+#include <assimp/Importer.hpp> 
+#include <assimp/scene.h> 
+#include <assimp/postprocess.h>
+#include <vector>
+
 // GLEW
 #include <GL/glew.h>
 
@@ -44,6 +49,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include <functional>
 
 // Function prototypes
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
@@ -124,6 +130,7 @@ glm::vec3 Light1 = glm::vec3(0);
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
+// Estructuras de datos para almacenar los vértices, texturas, etc.
 int main()
 {
 	// Init GLFW
@@ -184,10 +191,12 @@ int main()
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
 	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
+	Model Casita((char*)"Models/Models/Juegos/juegos.obj");
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
 	Model hotel((char*)"Models/Models/hotel/hotel.obj");
+	Model Techos((char*)"Models/Models/Techos/techos.obj");
 
 
 
@@ -353,23 +362,10 @@ int main()
 	    Tsuru.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		hotel.Draw(lightingShader);
-
-
-
-
-
-
-
-
-
-
 		Alberca.Draw(lightingShader);
-		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "color.a"), 0.3);
-		AguAlberca.Draw(lightingShader);
-		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
-		glBindVertexArray(0);
-	
+		Casita.Draw(lightingShader);
+		Techos.Draw(lightingShader);
+		glBindVertexArray(0);	
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -397,9 +393,6 @@ int main()
 		}
 		glBindVertexArray(0);
 
-
-
-		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
 
