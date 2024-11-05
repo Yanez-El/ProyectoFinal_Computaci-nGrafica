@@ -166,6 +166,9 @@ int main()
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
 	Model hotel((char*)"Models/Models/hotel/hotel.obj");
+	Model techos((char*)"Models/Models/Techos/techos.obj");
+	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
+
 
 
 
@@ -318,7 +321,7 @@ int main()
 		PisoFut.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
 
-	
+
 		model = glm::mat4(1);
 		//glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -327,12 +330,16 @@ int main()
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
+		hotel.Draw(lightingShader);
+		techos.Draw(lightingShader);
 
 		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		hotel.Draw(lightingShader);
-
+		techos.Draw(lightingShader);
+		techoCentral.Draw(lightingShader);
+		
 
 		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
