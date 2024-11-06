@@ -26,14 +26,14 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shader\animAgua.frag" />
+    <None Include="Shader\animAgua.vs" />
     <None Include="Shader\lamp.frag" />
     <None Include="Shader\lamp.vs" />
     <None Include="Shader\lighting.frag" />
     <None Include="Shader\lighting.vs" />
     <None Include="Shader\modelLoading.frag" />
     <None Include="Shader\modelLoading.vs" />
-    <None Include="Shader\water.frag" />
-    <None Include="Shader\water.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fuentesDeLuz.cpp" />

@@ -1,0 +1,19 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 05.11.2024 21:31:25
+
+newmtl Nadadora_BODY
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.9000 0.9000 0.9000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.5000 0.5000 0.5000
+	Pr 0.1000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5000
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+	map_Kd WOMAN-SWIMMER-DIFFUSE.jpg
+	bump WOMAN-SWIMMER-NBUMP.jpg
+	map_bump WOMAN-SWIMMER-NBUMP.jpg

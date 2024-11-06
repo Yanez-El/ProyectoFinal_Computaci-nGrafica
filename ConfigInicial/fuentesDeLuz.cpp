@@ -70,6 +70,11 @@ bool firstMouse = true;
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
 
+//Variables de movimiento
+float movNado = 0.0f;
+float rotBrazos = 0.0f;
+float rotPiernas = 0.0f;
+
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
 	glm::vec3(0.0f,0.0f, 0.0f),
@@ -180,6 +185,7 @@ int main()
 
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
+	Shader aguaShader("Shader/animAgua.vs", "Shader/animAgua.frag");
 	
 	Model Dog((char*)"Models/Models/Barda/Barda.obj");
 	Model Piso((char*)"Models/Models/Piso/Piso.obj");
@@ -187,6 +193,10 @@ int main()
 	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
 	Model Alberca((char*)"Models/Models/AlberK/Alberca.obj");
 	Model AguAlberca((char*)"Models/Models/AlberK/Agua.obj");
+	Model NadadoraBody((char*)"Models/Models/Nadadora/NadadoraB.obj");
+	Model NadadoraBrazos((char*)"Models/Models/Nadadora/BrazosNadadora.obj");
+	Model NadadoraPD((char*)"Models/Models/Nadadora/PiernaD.obj");
+	Model NadadoraPI((char*)"Models/Models/Nadadora/PiernaI.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
@@ -199,10 +209,6 @@ int main()
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
-
-
-
-
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO;
@@ -341,7 +347,7 @@ int main()
 
 
 		glm::mat4 model(1);
-
+		glm::mat4 modelTemp = glm::mat4(1.0f); //Temp
 	
 
 		//Carga de modelo 
@@ -370,11 +376,48 @@ int main()
 		hotel.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
-    Alberca.Draw(lightingShader);
+		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
-		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
+		//Dibujo de la nadadora
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		modelTemp = model = glm::translate(model, glm::vec3(movNado, 0.0f, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		NadadoraBody.Draw(lightingShader);
+		model = modelTemp;
+		model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
+		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		NadadoraBrazos.Draw(lightingShader);
+		model = modelTemp;
+		model = glm::translate(model, glm::vec3(-43.26, -0.329f, 25.609f));
+		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		NadadoraPD.Draw(lightingShader);
+		model = modelTemp;
+		model = glm::translate(model, glm::vec3(-43.329, -0.329f, 25.361f));
+		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, -1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		NadadoraPI.Draw(lightingShader);
 		glBindVertexArray(0);
-	
+
+		// Activar el shader
+		aguaShader.Use();
+		glUniform1f(glGetUniformLocation(aguaShader.Program, "time"), currentFrame);
+		modelLoc = glGetUniformLocation(aguaShader.Program, "model");
+		viewLoc = glGetUniformLocation(aguaShader.Program, "view");
+		projLoc = glGetUniformLocation(aguaShader.Program, "projection");
+		// Set matrices
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		model = glm::mat4(1);
+
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		AguAlberca.Draw(aguaShader);
+
+		glBindVertexArray(0);
+
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -472,6 +515,18 @@ void DoMovement()
 	{
 		pointLightPositions[0].z += 0.01f;
 	}
+	if (keys[GLFW_KEY_M])
+	{
+		rotBrazos += 1.0f;
+	}
+	if (keys[GLFW_KEY_N])
+	{
+		rotPiernas += 1.0f;
+	}
+	if (keys[GLFW_KEY_B])
+	{
+		rotPiernas -= 1.0f;
+	}
 	
 }
 
@@ -497,15 +552,17 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 
 	if (keys[GLFW_KEY_SPACE])
 	{
-		active = !active;
-		if (active)
-		{
-			Light1 = glm::vec3(1.0f, 1.0f, 0.0f);
-		}
-		else
-		{
-			Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
-		}
+		
+		//	active = !active;
+		//	if (active)
+		//	{
+		//		Light1 = glm::vec3(1.0f, 1.0f, 0.0f);
+		//	}
+		//	else
+		//	{
+		//		Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
+		//	}
+		//}
 	}
 }
 
