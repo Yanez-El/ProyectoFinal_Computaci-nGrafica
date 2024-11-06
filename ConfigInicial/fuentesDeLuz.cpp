@@ -210,6 +210,14 @@ int main()
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
+	Model acapulco((char*)"Models/Models/acapulco/acapulco.obj");
+	Model sillones((char*)"Models/Models/sillones/sillones.obj");
+	Model mesas_pasillo((char*)"Models/Models/mesas/mesas_pasillo.obj");
+	//Model mesas_amarillas((char*)"Models/Models/mesas/amarillas/mesas_amarillas.obj");
+	//Model mesas_azules((char*)"Models/Models/mesas/azules/mesas_azules.obj");
+	//Model mesas_verdes((char*)"Models/Models/mesas/verdes/mesas_verdes.obj");
+
+
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO;
@@ -378,6 +386,13 @@ int main()
 		hotel.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
+		acapulco.Draw(lightingShader);
+		sillones.Draw(lightingShader);
+		mesas_pasillo.Draw(lightingShader);
+		//mesas_amarillas.Draw(lightingShader);
+		//mesas_azules.Draw(lightingShader);
+		//mesas_verdes.Draw(lightingShader);
+
 		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
 		//Dibujo de la nadadora
