@@ -130,7 +130,7 @@ glm::vec3 Light1 = glm::vec3(0);
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
-// Estructuras de datos para almacenar los vértices, texturas, etc.
+// Estructuras de datos para almacenar los vÃ©rtices, texturas, etc.
 int main()
 {
 	// Init GLFW
@@ -196,7 +196,11 @@ int main()
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
 	Model hotel((char*)"Models/Models/hotel/hotel.obj");
-	Model Techos((char*)"Models/Models/Techos/techos.obj");
+
+	Model techos((char*)"Models/Models/Techos/techos.obj");
+	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
+
+
 
 
 
@@ -349,7 +353,7 @@ int main()
 		PisoFut.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
 
-	
+
 		model = glm::mat4(1);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -357,15 +361,20 @@ int main()
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
+		hotel.Draw(lightingShader);
+		techos.Draw(lightingShader);
 
 		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		hotel.Draw(lightingShader);
-		Alberca.Draw(lightingShader);
+		techos.Draw(lightingShader);
+		techoCentral.Draw(lightingShader);
+    Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
-		Techos.Draw(lightingShader);
-		glBindVertexArray(0);	
+		//glDisable(GL_BLEND);  //Desactiva el canal alfa 
+		glBindVertexArray(0);
+	
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
