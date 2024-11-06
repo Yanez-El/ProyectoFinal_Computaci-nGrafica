@@ -190,6 +190,7 @@ int main()
 	Model Dog((char*)"Models/Models/Barda/Barda.obj");
 	Model Piso((char*)"Models/Models/Piso/Piso.obj");
 	Model PisoFut((char*)"Models/Models/PisoFutbol/pisoFut.obj");
+	Model Porterias((char*)"Models/Models/PisoFutbol/Porterias.obj");
 	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
 	Model Alberca((char*)"Models/Models/AlberK/Alberca.obj");
 	Model AguAlberca((char*)"Models/Models/AlberK/Agua.obj");
@@ -357,6 +358,7 @@ int main()
 		Piso.Draw(lightingShader);
 		PisoBask.Draw(lightingShader);
 		PisoFut.Draw(lightingShader);
+		Porterias.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
 
 
