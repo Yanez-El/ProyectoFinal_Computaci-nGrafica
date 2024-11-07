@@ -55,6 +55,7 @@
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
+void animaNado();
 
 // Window dimensions
 const GLuint WIDTH = 1280, HEIGHT = 720;
@@ -69,9 +70,11 @@ bool firstMouse = true;
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
+int nado = 0;
 
 //Variables de movimiento
-float movNado = 0.0f;
+glm::vec3 movNado(0.0f);
+float rotCuerpo = 0.0f;
 float rotBrazos = 0.0f;
 float rotPiernas = 0.0f;
 
@@ -244,6 +247,8 @@ int main()
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 		DoMovement();
+		//Load Model
+		animaNado();
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -254,8 +259,7 @@ int main()
 
 		
 		
-		//Load Model
-	
+		
 
 		// Use cooresponding shader when setting uniforms/drawing objects
 		lightingShader.Use();
@@ -331,7 +335,7 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
 
 		// Set material properties
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 16.0f);
 
 		// Create camera transformations
 		glm::mat4 view;
@@ -363,7 +367,6 @@ int main()
 
 
 		model = glm::mat4(1);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 	    Dog.Draw(lightingShader);
@@ -371,8 +374,6 @@ int main()
 	    RejaBask.Draw(lightingShader);
 		hotel.Draw(lightingShader);
 		techos.Draw(lightingShader);
-
-		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		hotel.Draw(lightingShader);
@@ -382,24 +383,32 @@ int main()
 		Casita.Draw(lightingShader);
 		//Dibujo de la nadadora
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
-		modelTemp = model = glm::translate(model, glm::vec3(movNado, 0.0f, 0.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(-43.933f, -0.386f, 25.474f));
+		modelTemp = model = glm::translate(model, glm::vec3(movNado));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBody.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
+		//model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
 		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBrazos.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.26, -0.329f, 25.609f));
+		model = glm::translate(model, glm::vec3(0.667, 0.057f, 0.136f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPD.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.329, -0.329f, 25.361f));
+		model = glm::translate(model, glm::vec3(0.601f, 0.054f, -0.112f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, -1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPI.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
+		model = glm::mat4(1);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0f, 1.0f, 1.0f, 1.0f);
+		
+		AguAlberca.Draw(aguaShader);
 		glBindVertexArray(0);
 
 		// Activar el shader
@@ -416,8 +425,9 @@ int main()
 		model = glm::mat4(1);
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		/*glEnable(GL_BLEND);
 		AguAlberca.Draw(aguaShader);
-
+		glDisable(GL_BLEND);*/
 		glBindVertexArray(0);
 
 
@@ -530,6 +540,28 @@ void DoMovement()
 		rotPiernas -= 1.0f;
 	}
 	
+	
+}
+
+void animaNado() {
+	if (nado == 1) {
+		if (movNado.x > -15.0f) {
+			movNado.x -= 0.01f;
+		}
+		else if (movNado.x > -18.0f && movNado.x < 15.0f) {
+			movNado.x -= 0.01f;
+			movNado.z -= 0.01f;
+			rotCuerpo += 0.3f;
+		}
+		else if (movNado.x < -18.0f) {
+			nado = false;
+		}
+		rotBrazos += 0.3f;
+		printf("%.3f\n", movNado.x);
+		
+	}
+	
+	
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -549,6 +581,16 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		else if (action == GLFW_RELEASE)
 		{
 			keys[key] = false;
+		}
+	}
+
+	if (keys[GLFW_KEY_L])
+	{
+		if (nado == 0) {
+			nado = 1;
+		}
+		else {
+			nado = 0;
 		}
 	}
 
