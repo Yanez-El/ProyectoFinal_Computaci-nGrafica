@@ -82,7 +82,15 @@ float sentidoBrazos = 1.0f;
 float rotCuerpo = 0.0f;
 float rotCuerpoX = 0.0f;
 float rotBrazos = 0.0f;
+float rotBrazoDJB = 0.0f;
+float rotBrazoIJB = 0.0f;
+float rotAntebrazoDJB = 0.0f;
+float rotAntebraziIJB = 0.0f;
 float rotPiernas = 0.0f;
+float rotPiernaDJB = 0.0f;
+float rotPiernaIJB = 0.0f;
+float rotPieDJB = 0.0f;
+float rotPieIJB = 0.0f;
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
@@ -201,12 +209,14 @@ int main()
 	Model PisoFut((char*)"Models/Models/PisoFutbol/pisoFut.obj");
 	Model Porterias((char*)"Models/Models/PisoFutbol/Porterias.obj");
 	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
+	Model Canastas((char*)"Models/Models/PisoBasket/canastas.obj");
 	Model Alberca((char*)"Models/Models/AlberK/Alberca.obj");
 	Model AguAlberca((char*)"Models/Models/AlberK/Agua.obj");
 	Model NadadoraBody((char*)"Models/Models/Nadadora/NadadoraB.obj");
 	Model NadadoraBrazos((char*)"Models/Models/Nadadora/BrazosNadadora.obj");
 	Model NadadoraPD((char*)"Models/Models/Nadadora/PiernaD.obj");
 	Model NadadoraPI((char*)"Models/Models/Nadadora/PiernaI.obj");
+	Model CuerpoJB((char*)"Models/Models/jugadorBasket/CuerpoJB.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
@@ -376,6 +386,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 		PisoBask.Draw(lightingShader);
+		Canastas.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		BalonB.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
@@ -408,29 +419,39 @@ int main()
 		Casita.Draw(lightingShader);
 		//Dibujo de la nadadora
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
-		modelTemp = model = glm::translate(model, glm::vec3(-43.933f, -0.386f, 25.474f));
+		modelTemp = model = glm::translate(model, glm::vec3(-42.976f, -0.427f, 25.693f));
 		modelTemp = model = glm::translate(model, glm::vec3(movNado));
 		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
 		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBody.Draw(lightingShader);
 		model = modelTemp;
-		//model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
+		model = glm::translate(model, glm::vec3(0.166f, 0.027f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, sentidoBrazos));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBrazos.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(0.667, 0.057f, 0.136f));
+		model = glm::translate(model, glm::vec3(0.539f, 0.059f, 0.077f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPD.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(0.601f, 0.054f, -0.112f));
+		model = glm::translate(model, glm::vec3(0.5f, 0.057f, -0.061f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, -1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPI.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0f, 1.0f, 1.0f, 1.0f);
+		//Dibujo del jugador de basket
+		model = glm::mat4(1);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		modelTemp = model = glm::translate(model, glm::vec3(-51.384f, 1.307f, 40.716f));
+		/*modelTemp = model = glm::translate(model, glm::vec3(movNado));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));*/
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		CuerpoJB.Draw(lightingShader);
+
 		glBindVertexArray(0);
 
 		// Activar el shader
