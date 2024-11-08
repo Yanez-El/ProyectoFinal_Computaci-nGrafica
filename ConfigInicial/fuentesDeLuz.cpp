@@ -226,7 +226,7 @@ int main()
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
-	Model hotel((char*)"Models/Models/hotel/hotel.obj");
+	Model hotel_amueblado((char*)"Models/Models/hotel/hotel_amueblado.obj");
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
@@ -401,11 +401,10 @@ int main()
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
-		hotel.Draw(lightingShader);
 		techos.Draw(lightingShader);
 	    Tsuru.Draw(lightingShader);
+		hotel_amueblado.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
-		hotel.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
 		acapulco.Draw(lightingShader);
@@ -414,9 +413,10 @@ int main()
 		//mesas_amarillas.Draw(lightingShader);
 		//mesas_azules.Draw(lightingShader);
 		//mesas_verdes.Draw(lightingShader);
-
 		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
+
+
 		//Dibujo de la nadadora
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		modelTemp = model = glm::translate(model, glm::vec3(-42.976f, -0.427f, 25.693f));
