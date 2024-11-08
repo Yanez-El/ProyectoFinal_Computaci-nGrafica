@@ -70,11 +70,17 @@ bool firstMouse = true;
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
+bool delante = true;
+bool atras = false;
+bool giroDerecha = false;
+bool step = false;
 int nado = 0;
 
 //Variables de movimiento
 glm::vec3 movNado(0.0f);
+float sentidoBrazos = 1.0f;
 float rotCuerpo = 0.0f;
+float rotCuerpoX = 0.0f;
 float rotBrazos = 0.0f;
 float rotPiernas = 0.0f;
 
@@ -204,6 +210,7 @@ int main()
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
+	Model BalonB((char*)"Models/Models/PisoBasket/BasketBall.obj");
 	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
 	Model Casita((char*)"Models/Models/Juegos/juegos.obj");
 
@@ -369,6 +376,9 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 		PisoBask.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		BalonB.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		PisoFut.Draw(lightingShader);
 		Porterias.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
@@ -401,11 +411,12 @@ int main()
 		modelTemp = model = glm::translate(model, glm::vec3(-43.933f, -0.386f, 25.474f));
 		modelTemp = model = glm::translate(model, glm::vec3(movNado));
 		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBody.Draw(lightingShader);
 		model = modelTemp;
 		//model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
-		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, sentidoBrazos));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBrazos.Draw(lightingShader);
 		model = modelTemp;
@@ -559,23 +570,67 @@ void DoMovement()
 
 void animaNado() {
 	if (nado == 1) {
-		if (movNado.x > -15.0f) {
+		if (delante) {
 			movNado.x -= 0.01f;
+			if (rotCuerpo > 270.0f && rotCuerpo < 360.0f) {
+				movNado.z += 0.01f;
+				rotCuerpo += 0.3f;
+				rotCuerpoX += 0.6f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (rotCuerpo > 360.0f) {
+				rotCuerpo = 0.0f;
+				rotCuerpoX = 0.0f;
+				sentidoBrazos = 1.0f;
+			}
+			else if (movNado.x > -18.0f && movNado.x < -15.0f) {
+				movNado.z -= 0.01f;
+				rotCuerpo += 0.3f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x < -18.0f) {
+				delante = false;
+				atras = true;
+			}
 		}
-		else if (movNado.x > -18.0f && movNado.x < 15.0f) {
-			movNado.x -= 0.01f;
-			movNado.z -= 0.01f;
-			rotCuerpo += 0.3f;
-		}
-		else if (movNado.x < -18.0f) {
-			nado = false;
+		else if (atras) {
+			movNado.x += 0.01;
+			if (movNado.x > -18.0f && movNado.x < -15.0f) {
+				movNado.z -= 0.01f;
+				rotCuerpo += 0.3f;
+				rotCuerpoX += 0.6f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x > -2.0f && movNado.x < 1.0f) {
+				movNado.z += 0.01f;
+				rotCuerpo += 0.3f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x > 1.0f) {
+				delante = true;
+				atras = false;
+			}
+
+			if (movNado.x > -15.0f) {
+				sentidoBrazos = -1.0f;
+			}
 		}
 		rotBrazos += 3.0f;
-		printf("%.3f\n", movNado.x);
-		
+
+		if (!step) {
+			rotPiernas += 1.0f;
+			if (rotPiernas > 15.0f) {
+				step = true;
+			}
+		}
+		else {
+			rotPiernas -= 1.0f;
+			if (rotPiernas < -15.0f) {
+				step = false;
+			}
+		}
+
 	}
-	
-	
 }
 
 // Is called whenever a key is pressed/released via GLFW
