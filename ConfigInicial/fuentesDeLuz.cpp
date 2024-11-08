@@ -206,7 +206,7 @@ int main()
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
-	Model hotel((char*)"Models/Models/hotel/hotel.obj");
+	Model hotel_amueblado((char*)"Models/Models/hotel/hotel_amueblado.obj");
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
@@ -377,13 +377,13 @@ int main()
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
-		hotel.Draw(lightingShader);
+		hotel_amueblado.Draw(lightingShader);
 		techos.Draw(lightingShader);
 
 		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
-		hotel.Draw(lightingShader);
+		hotel_amueblado.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
 		acapulco.Draw(lightingShader);
