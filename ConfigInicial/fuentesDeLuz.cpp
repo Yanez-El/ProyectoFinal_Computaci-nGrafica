@@ -208,7 +208,7 @@ int main()
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
 	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_hotel.obj");
 	Model pisos_hotel((char*)"Models/Models/pisos_hotel/pisos_hotel.obj");
-	//Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
+	Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
 	Model muebles_alta((char*)"Models/Models/muebles_alta/mueble_alta.obj");
 	Model cuartos_hotel((char*)"Models/Models/cuartos_hotel/cuartos_hotel.obj");
 
@@ -384,7 +384,7 @@ int main()
 		cuerpo_hotel.Draw(lightingShader);
 		pisos_hotel.Draw(lightingShader);
 		cuartos_hotel.Draw(lightingShader);
-		//muebles_baja.Draw(lightingShader);
+		muebles_baja.Draw(lightingShader);
 		muebles_alta.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		techos.Draw(lightingShader);

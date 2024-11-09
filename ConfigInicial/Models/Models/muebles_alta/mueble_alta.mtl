@@ -28,6 +28,8 @@ newmtl Clay
 	Ni 1.5200
 	Ke 0.0000 0.0000 0.0000
 	illum 2
+	map_Ka madera_cama.jpg
+	map_Kd madera_cama.jpg
 
 newmtl Material__929
 	Ns 10.0000
