@@ -55,6 +55,7 @@
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
+void animaNado();
 
 // Window dimensions
 const GLuint WIDTH = 1280, HEIGHT = 720;
@@ -69,11 +70,27 @@ bool firstMouse = true;
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
+bool delante = true;
+bool atras = false;
+bool giroDerecha = false;
+bool step = false;
+int nado = 0;
 
 //Variables de movimiento
-float movNado = 0.0f;
+glm::vec3 movNado(0.0f);
+float sentidoBrazos = 1.0f;
+float rotCuerpo = 0.0f;
+float rotCuerpoX = 0.0f;
 float rotBrazos = 0.0f;
+float rotBrazoDJB = 0.0f;
+float rotBrazoIJB = 0.0f;
+float rotAntebrazoDJB = 0.0f;
+float rotAntebraziIJB = 0.0f;
 float rotPiernas = 0.0f;
+float rotPiernaDJB = 0.0f;
+float rotPiernaIJB = 0.0f;
+float rotPieDJB = 0.0f;
+float rotPieIJB = 0.0f;
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
@@ -192,31 +209,34 @@ int main()
 	Model PisoFut((char*)"Models/Models/PisoFutbol/pisoFut.obj");
 	Model Porterias((char*)"Models/Models/PisoFutbol/Porterias.obj");
 	Model PisoBask((char*)"Models/Models/PisoBasket/pisoBask.obj");
+	Model Canastas((char*)"Models/Models/PisoBasket/canastas.obj");
 	Model Alberca((char*)"Models/Models/AlberK/Alberca.obj");
 	Model AguAlberca((char*)"Models/Models/AlberK/Agua.obj");
 	Model NadadoraBody((char*)"Models/Models/Nadadora/NadadoraB.obj");
 	Model NadadoraBrazos((char*)"Models/Models/Nadadora/BrazosNadadora.obj");
 	Model NadadoraPD((char*)"Models/Models/Nadadora/PiernaD.obj");
 	Model NadadoraPI((char*)"Models/Models/Nadadora/PiernaI.obj");
+	Model CuerpoJB((char*)"Models/Models/jugadorBasket/CuerpoJB.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
+	Model BalonB((char*)"Models/Models/PisoBasket/BasketBall.obj");
 	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
 	Model Casita((char*)"Models/Models/Juegos/juegos.obj");
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
-	Model hotel_amueblado((char*)"Models/Models/hotel/hotel_amueblado.obj");
+	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_hotel.obj");
+	Model pisos_hotel((char*)"Models/Models/pisos_hotel/pisos_hotel.obj");
+	Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
+	Model muebles_alta((char*)"Models/Models/muebles_alta/mueble_alta.obj");
+	Model cuartos_hotel((char*)"Models/Models/cuartos_hotel/cuartos_hotel.obj");
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
 	Model acapulco((char*)"Models/Models/acapulco/acapulco.obj");
 	Model sillones((char*)"Models/Models/sillones/sillones.obj");
 	Model mesas_pasillo((char*)"Models/Models/mesas/mesas_pasillo.obj");
-	//Model mesas_amarillas((char*)"Models/Models/mesas/amarillas/mesas_amarillas.obj");
-	//Model mesas_azules((char*)"Models/Models/mesas/azules/mesas_azules.obj");
-	//Model mesas_verdes((char*)"Models/Models/mesas/verdes/mesas_verdes.obj");
-
 
 
 	// First, set the container's VAO (and VBO)
@@ -252,6 +272,8 @@ int main()
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 		DoMovement();
+		//Load Model
+		animaNado();
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -262,8 +284,7 @@ int main()
 
 		
 		
-		//Load Model
-	
+		
 
 		// Use cooresponding shader when setting uniforms/drawing objects
 		lightingShader.Use();
@@ -277,7 +298,7 @@ int main()
 
 		// Directional light
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
-		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"),0.4f,0.4f,0.4f);
+		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.ambient"),0.6f,0.6f,0.6f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.diffuse"), 0.2f, 0.2f, 0.2f);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "dirLight.specular"),0.3f, 0.3f, 0.3f);
 
@@ -339,7 +360,7 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "spotLight.outerCutOff"), glm::cos(glm::radians(18.0f)));
 
 		// Set material properties
-		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 5.0f);
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 16.0f);
 
 		// Create camera transformations
 		glm::mat4 view;
@@ -365,25 +386,29 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 		PisoBask.Draw(lightingShader);
+		Canastas.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		BalonB.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		PisoFut.Draw(lightingShader);
 		Porterias.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
 
 
 		model = glm::mat4(1);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 	    Dog.Draw(lightingShader);
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
-		hotel_amueblado.Draw(lightingShader);
 		techos.Draw(lightingShader);
-
-		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
+		cuerpo_hotel.Draw(lightingShader);
+		pisos_hotel.Draw(lightingShader);
+		cuartos_hotel.Draw(lightingShader);
+		muebles_baja.Draw(lightingShader);
+		muebles_alta.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
-		hotel_amueblado.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
 		acapulco.Draw(lightingShader);
@@ -392,29 +417,45 @@ int main()
 		//mesas_amarillas.Draw(lightingShader);
 		//mesas_azules.Draw(lightingShader);
 		//mesas_verdes.Draw(lightingShader);
-
 		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
+
+
 		//Dibujo de la nadadora
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
-		modelTemp = model = glm::translate(model, glm::vec3(movNado, 0.0f, 0.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(-42.976f, -0.427f, 25.693f));
+		modelTemp = model = glm::translate(model, glm::vec3(movNado));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBody.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.934, -0.385f, 25.475f));
-		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(0.166f, 0.027f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotBrazos), glm::vec3(0.0f, 0.0f, sentidoBrazos));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraBrazos.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.26, -0.329f, 25.609f));
+		model = glm::translate(model, glm::vec3(0.539f, 0.059f, 0.077f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPD.Draw(lightingShader);
 		model = modelTemp;
-		model = glm::translate(model, glm::vec3(-43.329, -0.329f, 25.361f));
+		model = glm::translate(model, glm::vec3(0.5f, 0.057f, -0.061f));
 		model = glm::rotate(model, glm::radians(rotPiernas), glm::vec3(0.0f, 0.0f, -1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		NadadoraPI.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
+		glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0f, 1.0f, 1.0f, 1.0f);
+		//Dibujo del jugador de basket
+		model = glm::mat4(1);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		modelTemp = model = glm::translate(model, glm::vec3(-51.384f, 1.307f, 40.716f));
+		/*modelTemp = model = glm::translate(model, glm::vec3(movNado));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
+		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));*/
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		CuerpoJB.Draw(lightingShader);
+
 		glBindVertexArray(0);
 
 		// Activar el shader
@@ -431,8 +472,12 @@ int main()
 		model = glm::mat4(1);
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0f, 1.0f, 1.0f, 0.75f);
 		AguAlberca.Draw(aguaShader);
-
+		glDisable(GL_BLEND); //Desactiva el canal alfa
 		glBindVertexArray(0);
 
 
@@ -545,6 +590,72 @@ void DoMovement()
 		rotPiernas -= 1.0f;
 	}
 	
+	
+}
+
+void animaNado() {
+	if (nado == 1) {
+		if (delante) {
+			movNado.x -= 0.01f;
+			if (rotCuerpo > 270.0f && rotCuerpo < 360.0f) {
+				movNado.z += 0.01f;
+				rotCuerpo += 0.3f;
+				rotCuerpoX += 0.6f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (rotCuerpo > 360.0f) {
+				rotCuerpo = 0.0f;
+				rotCuerpoX = 0.0f;
+				sentidoBrazos = 1.0f;
+			}
+			else if (movNado.x > -18.0f && movNado.x < -15.0f) {
+				movNado.z -= 0.01f;
+				rotCuerpo += 0.3f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x < -18.0f) {
+				delante = false;
+				atras = true;
+			}
+		}
+		else if (atras) {
+			movNado.x += 0.01;
+			if (movNado.x > -18.0f && movNado.x < -15.0f) {
+				movNado.z -= 0.01f;
+				rotCuerpo += 0.3f;
+				rotCuerpoX += 0.6f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x > -2.0f && movNado.x < 1.0f) {
+				movNado.z += 0.01f;
+				rotCuerpo += 0.3f;
+				printf("%.3f\n", rotCuerpo);
+			}
+			else if (movNado.x > 1.0f) {
+				delante = true;
+				atras = false;
+			}
+
+			if (movNado.x > -15.0f) {
+				sentidoBrazos = -1.0f;
+			}
+		}
+		rotBrazos += 3.0f;
+
+		if (!step) {
+			rotPiernas += 1.0f;
+			if (rotPiernas > 15.0f) {
+				step = true;
+			}
+		}
+		else {
+			rotPiernas -= 1.0f;
+			if (rotPiernas < -15.0f) {
+				step = false;
+			}
+		}
+
+	}
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -564,6 +675,16 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		else if (action == GLFW_RELEASE)
 		{
 			keys[key] = false;
+		}
+	}
+
+	if (keys[GLFW_KEY_L])
+	{
+		if (nado == 0) {
+			nado = 1;
+		}
+		else {
+			nado = 0;
 		}
 	}
 
