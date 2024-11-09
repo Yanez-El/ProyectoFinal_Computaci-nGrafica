@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 08.11.2024 14:09:05
+# File Created: 06.11.2024 10:00:47
 
 newmtl Material__917
 	Ns 10.0000
@@ -12,8 +12,8 @@ newmtl Material__917
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka amarillas\amarillo.jpg
-	map_Kd amarillas\amarillo.jpg
+	map_Ka amarillo.jpg
+	map_Kd amarillo.jpg
 
 newmtl Material__918
 	Ns 10.0000
@@ -26,8 +26,8 @@ newmtl Material__918
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka azules\azul.jpg
-	map_Kd azules\azul.jpg
+	map_Ka amarillo.jpg
+	map_Kd amarillo.jpg
 
 newmtl Material__920
 	Ns 10.0000
@@ -40,5 +40,6 @@ newmtl Material__920
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka verdes\verde.png
-	map_Kd verdes\verde.png
+	map_Ka amarillo.jpg
+	map_Kd amarillo.jpg
+
