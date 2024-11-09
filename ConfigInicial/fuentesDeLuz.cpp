@@ -226,17 +226,17 @@ int main()
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
-	Model hotel_amueblado((char*)"Models/Models/hotel/hotel_amueblado.obj");
+	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_hotel.obj");
+	Model pisos_hotel((char*)"Models/Models/pisos_hotel/pisos_hotel.obj");
+	Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
+	Model muebles_alta((char*)"Models/Models/muebles_alta/mueble_alta.obj");
+	Model cuartos_hotel((char*)"Models/Models/cuartos_hotel/cuartos_hotel.obj");
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
 	Model acapulco((char*)"Models/Models/acapulco/acapulco.obj");
 	Model sillones((char*)"Models/Models/sillones/sillones.obj");
 	Model mesas_pasillo((char*)"Models/Models/mesas/mesas_pasillo.obj");
-	//Model mesas_amarillas((char*)"Models/Models/mesas/amarillas/mesas_amarillas.obj");
-	//Model mesas_azules((char*)"Models/Models/mesas/azules/mesas_azules.obj");
-	//Model mesas_verdes((char*)"Models/Models/mesas/verdes/mesas_verdes.obj");
-
 
 
 	// First, set the container's VAO (and VBO)
@@ -403,7 +403,11 @@ int main()
 	    RejaBask.Draw(lightingShader);
 		techos.Draw(lightingShader);
 	    Tsuru.Draw(lightingShader);
-		hotel_amueblado.Draw(lightingShader);
+		cuerpo_hotel.Draw(lightingShader);
+		pisos_hotel.Draw(lightingShader);
+		cuartos_hotel.Draw(lightingShader);
+		muebles_baja.Draw(lightingShader);
+		muebles_alta.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
 		techos.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
