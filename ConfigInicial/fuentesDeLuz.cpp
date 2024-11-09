@@ -56,6 +56,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 void MouseCallback(GLFWwindow *window, double xPos, double yPos);
 void DoMovement();
 void animaNado();
+void Animation();
 
 // Window dimensions
 const GLuint WIDTH = 1280, HEIGHT = 720;
@@ -84,8 +85,8 @@ float rotCuerpoX = 0.0f;
 float rotBrazos = 0.0f;
 float rotBrazoDJB = 0.0f;
 float rotBrazoIJB = 0.0f;
-float rotAntebrazoDJB = 0.0f;
-float rotAntebraziIJB = 0.0f;
+float rotAntDJB = 0.0f;
+float rotAntIJB = 0.0f; 
 float rotPiernas = 0.0f;
 float rotPiernaDJB = 0.0f;
 float rotPiernaIJB = 0.0f;
@@ -143,6 +144,153 @@ float vertices[] = {
 	   -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
 	   -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 };
+
+//KeyFrames
+float movJBX, movJBY;
+float movBalonX, movBalonY;
+
+#define MAX_FRAMES 15
+int i_max_steps = 190;
+int i_curr_steps = 0;
+typedef struct _frame {
+
+	float movJBX;
+	float movJBY;
+	float movBalonX;
+	float movBalonY;
+	float rotBrazoDJB;
+	float rotBrazoIJB;
+	float rotAntDJB;
+	float rotAntIJB;
+	float rotPiernaDJB;
+	float rotPieDJB;
+	float rotPiernaIJB;
+	float rotPieIJB;
+	float incX;
+	float incY;
+	float incBalonX;
+	float incBalonY;
+	float incRotBrazoDJB;
+	float incRotBrazoIJB;
+	float incRotAntDJB;
+	float incRotAntIJB;
+	float incRotPiernaDJB;
+	float incRotPieDJB;
+	float incRotPiernaIJB;
+	float incRotPieIJB;
+
+
+}FRAME;
+
+FRAME KeyFrame[MAX_FRAMES];
+int FrameIndex = 0;			//introducir datos
+bool play = false;
+int playIndex = 0;
+
+void resetElements(void)
+{
+	movJBX = KeyFrame[0].movJBX;
+	movJBY = KeyFrame[0].movJBY;
+	movBalonX = KeyFrame[0].movBalonX;
+	movBalonY = KeyFrame[0].movBalonY;
+	rotBrazoDJB = KeyFrame[0].rotBrazoDJB;
+	rotBrazoIJB = KeyFrame[0].rotBrazoIJB;
+	rotAntDJB = KeyFrame[0].rotAntDJB;
+	rotAntIJB = KeyFrame[0].rotAntIJB;
+	rotPiernaDJB = KeyFrame[0].rotPiernaDJB;
+	rotPieDJB = KeyFrame[0].rotPieDJB;
+	rotPiernaIJB = KeyFrame[0].rotPiernaIJB;
+	rotPieIJB = KeyFrame[0].rotPieIJB;
+
+}
+void interpolation(void)
+{
+
+	KeyFrame[playIndex].incX = (KeyFrame[playIndex + 1].movJBX - KeyFrame[playIndex].movJBX) / i_max_steps;
+	KeyFrame[playIndex].incY = (KeyFrame[playIndex + 1].movJBY - KeyFrame[playIndex].movJBY) / i_max_steps;
+	KeyFrame[playIndex].incBalonX = (KeyFrame[playIndex + 1].movBalonX - KeyFrame[playIndex].movBalonX) / i_max_steps;
+	KeyFrame[playIndex].incBalonY = (KeyFrame[playIndex + 1].movBalonY - KeyFrame[playIndex].movBalonY) / i_max_steps;
+	KeyFrame[playIndex].incRotBrazoDJB = (KeyFrame[playIndex + 1].rotBrazoDJB - KeyFrame[playIndex].rotBrazoDJB) / i_max_steps;
+	KeyFrame[playIndex].incRotBrazoIJB = (KeyFrame[playIndex + 1].rotBrazoIJB - KeyFrame[playIndex].rotBrazoIJB) / i_max_steps;
+	KeyFrame[playIndex].incRotAntDJB = (KeyFrame[playIndex + 1].rotAntDJB - KeyFrame[playIndex].rotAntDJB) / i_max_steps;
+	KeyFrame[playIndex].incRotAntIJB = (KeyFrame[playIndex + 1].rotAntIJB - KeyFrame[playIndex].rotAntIJB) / i_max_steps;
+	KeyFrame[playIndex].incRotPiernaDJB = (KeyFrame[playIndex + 1].rotPiernaDJB - KeyFrame[playIndex].rotPiernaDJB) / i_max_steps;
+	KeyFrame[playIndex].incRotPieDJB = (KeyFrame[playIndex + 1].rotPieDJB - KeyFrame[playIndex].rotPieDJB) / i_max_steps;
+	KeyFrame[playIndex].incRotPiernaIJB = (KeyFrame[playIndex + 1].rotPiernaIJB - KeyFrame[playIndex].rotPiernaIJB) / i_max_steps;
+	KeyFrame[playIndex].incRotPieIJB = (KeyFrame[playIndex + 1].rotPieIJB - KeyFrame[playIndex].rotPieIJB) / i_max_steps;
+
+
+}
+
+void existeGuardado(void) {
+	ifstream Guardado("animacion.txt");
+	vector<float> datos;  // Arreglo donde guardarás los datos del archivo
+	int j = 0;
+	// Verificamos si el archivo existe
+	if (!Guardado.is_open()) {
+		// Si el archivo no existe, lo creamos y llenamos con datos
+		cout << "El archivo no existe. Creando...\n";
+		ofstream archivoEscritura("ejemplo.txt");
+		archivoEscritura.close();
+	}
+	else {
+		// Si el archivo existe, leemos los datos y los guardamos en el vector
+		cout << "El archivo ya existe. Leyendo datos...\n";
+		float numero;
+		while (Guardado >> numero) {
+			datos.push_back(numero);
+		}
+		Guardado.close();  // Cerramos el archivo después de leer
+		// Mostramos los datos leídos
+		cout << "Datos leidos correctamente\n";
+		for (int i = 0; i < datos.size() / 12; i++) {
+			KeyFrame[i].movJBX = datos[j];
+			j++;
+			KeyFrame[i].movJBY = datos[j];
+			j++;
+			KeyFrame[i].rotBrazoDJB = datos[j];
+			j++;
+			KeyFrame[i].rotBrazoIJB = datos[j];
+			j++;
+			KeyFrame[i].rotAntDJB = datos[j];
+			j++;
+			KeyFrame[i].rotAntIJB = datos[j];
+			j++;
+			KeyFrame[i].rotPiernaDJB = datos[j];
+			j++;
+			KeyFrame[i].rotPiernaIJB = datos[j];
+			j++;
+			KeyFrame[i].rotPieDJB = datos[j];
+			j++;
+			KeyFrame[i].rotPieIJB = datos[j];
+			j++;
+			KeyFrame[i].movBalonX = datos[j];
+			j++;
+			KeyFrame[i].movBalonY = datos[j];
+			j++;
+			
+		}
+		FrameIndex = (datos.size() / 12);
+	}
+}
+void llenado(int maximo) {
+	ofstream Creado("animacion.txt");
+	for (int i = 0; i < maximo; ++i) {
+		Creado << KeyFrame[i].movJBX << endl;
+		Creado << KeyFrame[i].movJBY << endl;
+		Creado << KeyFrame[i].rotBrazoDJB << endl;
+		Creado << KeyFrame[i].rotBrazoIJB << endl;
+		Creado << KeyFrame[i].rotAntDJB << endl;
+		Creado << KeyFrame[i].rotAntIJB << endl;
+		Creado << KeyFrame[i].rotPiernaDJB << endl;
+		Creado << KeyFrame[i].rotPiernaIJB << endl;
+		Creado << KeyFrame[i].rotPieDJB << endl;
+		Creado << KeyFrame[i].rotPieIJB << endl;
+		Creado << KeyFrame[i].movBalonX << endl;
+		Creado << KeyFrame[i].movBalonY << endl;
+	}
+	Creado.close();
+}
 
 
 glm::vec3 Light1 = glm::vec3(0);
@@ -217,19 +365,26 @@ int main()
 	Model NadadoraPD((char*)"Models/Models/Nadadora/PiernaD.obj");
 	Model NadadoraPI((char*)"Models/Models/Nadadora/PiernaI.obj");
 	Model CuerpoJB((char*)"Models/Models/jugadorBasket/CuerpoJB.obj");
+	Model BrazoDJB((char*)"Models/Models/jugadorBasket/BrazoDJB.obj");
+	Model BrazoIJB((char*)"Models/Models/jugadorBasket/BrazoIJB.obj");
+	Model AntebrazoDJB((char*)"Models/Models/jugadorBasket/AntebrazoDJB.obj");
+	Model AntebrazoIJB((char*)"Models/Models/jugadorBasket/AntebrazoIJB.obj");
+	Model PiernaDJB((char*)"Models/Models/jugadorBasket/PiernaDJB.obj");
+	Model PiernaIJB((char*)"Models/Models/jugadorBasket/PiernaIJB.obj");
+	Model PieDJB((char*)"Models/Models/jugadorBasket/PieDJB.obj");
+	Model PieIJB((char*)"Models/Models/jugadorBasket/PieIJB.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
 	Model BalonB((char*)"Models/Models/PisoBasket/BasketBall.obj");
-	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
-	Model Casita((char*)"Models/Models/Juegos/juegos.obj");
+	Model Casita((char*)"Models/Models/Casita/juegos.obj");
 
 	//Contenedor
 	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
 	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_hotel.obj");
 	Model pisos_hotel((char*)"Models/Models/pisos_hotel/pisos_hotel.obj");
 	Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
-	Model muebles_alta((char*)"Models/Models/muebles_alta/mueble_alta.obj");
+	Model muebles_alta((char*)"Models/Models/muebles_alta/muebles_alta.obj");
 	Model cuartos_hotel((char*)"Models/Models/cuartos_hotel/cuartos_hotel.obj");
 
 	Model techos((char*)"Models/Models/Techos/techos.obj");
@@ -238,6 +393,35 @@ int main()
 	Model sillones((char*)"Models/Models/sillones/sillones.obj");
 	Model mesas_pasillo((char*)"Models/Models/mesas/mesas_pasillo.obj");
 
+	//KeyFrames
+	for (int i = 0; i < MAX_FRAMES; i++)
+	{
+		KeyFrame[i].movJBX = 0;
+		KeyFrame[i].movJBY = 0;
+		KeyFrame[i].movBalonX = 0;
+		KeyFrame[i].movBalonY = 0;
+		KeyFrame[i].rotBrazoDJB = 0;
+		KeyFrame[i].rotBrazoIJB = 0;
+		KeyFrame[i].rotAntDJB = 0;
+		KeyFrame[i].rotAntIJB = 0;
+		KeyFrame[i].rotPiernaDJB = 0;
+		KeyFrame[i].rotPieDJB = 0;
+		KeyFrame[i].rotPiernaIJB = 0;
+		KeyFrame[i].rotPieIJB = 0;
+		KeyFrame[i].incX = 0;
+		KeyFrame[i].incY = 0;
+		KeyFrame[i].incBalonX = 0;
+		KeyFrame[i].incBalonY = 0;
+		KeyFrame[i].incRotBrazoDJB = 0;
+		KeyFrame[i].incRotBrazoIJB = 0;
+		KeyFrame[i].incRotAntDJB = 0;
+		KeyFrame[i].incRotAntIJB = 0;
+		KeyFrame[i].incRotPiernaDJB = 0;
+		KeyFrame[i].incRotPieDJB = 0;
+		KeyFrame[i].incRotPiernaIJB = 0;
+		KeyFrame[i].incRotPieIJB = 0;
+
+	}
 
 	// First, set the container's VAO (and VBO)
 	GLuint VBO, VAO;
@@ -260,6 +444,8 @@ int main()
 
 	glm::mat4 projection = glm::perspective(camera.GetZoom(), (GLfloat)SCREEN_WIDTH / (GLfloat)SCREEN_HEIGHT, 0.1f, 200.0f);
 
+	existeGuardado();
+
 	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -274,6 +460,7 @@ int main()
 		DoMovement();
 		//Load Model
 		animaNado();
+		Animation();
 
 		// Clear the colorbuffer
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -378,6 +565,7 @@ int main()
 
 		glm::mat4 model(1);
 		glm::mat4 modelTemp = glm::mat4(1.0f); //Temp
+		glm::mat4 modelTemp2 = glm::mat4(1.0f); //Temp
 	
 
 		//Carga de modelo 
@@ -388,7 +576,11 @@ int main()
 		PisoBask.Draw(lightingShader);
 		Canastas.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		modelTemp = model = glm::translate(model, glm::vec3(movBalonX, movBalonY, 0.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BalonB.Draw(lightingShader);
+		model = glm::mat4(1);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		PisoFut.Draw(lightingShader);
 		Porterias.Draw(lightingShader);
@@ -402,7 +594,6 @@ int main()
 	    RejaFut.Draw(lightingShader);
 	    RejaBask.Draw(lightingShader);
 		techos.Draw(lightingShader);
-	    Tsuru.Draw(lightingShader);
 		cuerpo_hotel.Draw(lightingShader);
 		pisos_hotel.Draw(lightingShader);
 		cuartos_hotel.Draw(lightingShader);
@@ -414,9 +605,6 @@ int main()
 		acapulco.Draw(lightingShader);
 		sillones.Draw(lightingShader);
 		mesas_pasillo.Draw(lightingShader);
-		//mesas_amarillas.Draw(lightingShader);
-		//mesas_azules.Draw(lightingShader);
-		//mesas_verdes.Draw(lightingShader);
 		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
 
@@ -450,12 +638,51 @@ int main()
 		model = glm::mat4(1);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		modelTemp = model = glm::translate(model, glm::vec3(-51.384f, 1.307f, 40.716f));
-		/*modelTemp = model = glm::translate(model, glm::vec3(movNado));
-		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpo), glm::vec3(0.0f, -1.0f, 0.0f));
-		modelTemp = model = glm::rotate(model, glm::radians(rotCuerpoX), glm::vec3(1.0f, 0.0f, 0.0f));*/
+		modelTemp = model = glm::translate(model, glm::vec3(movJBX, movJBY, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		CuerpoJB.Draw(lightingShader);
+		model = modelTemp;
+		modelTemp2 = model = glm::translate(model, glm::vec3(0.028f, 0.181f, -0.196f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoDJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		BrazoDJB.Draw(lightingShader);
+		model = modelTemp2;
+		model = glm::translate(model, glm::vec3(0.091f, -0.219f, -0.191f));
+		model = glm::rotate(model, glm::radians(rotAntDJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		AntebrazoDJB.Draw(lightingShader);
+		model = modelTemp;
+		modelTemp2 = model = glm::translate(model, glm::vec3(0.028f, 0.180f, 0.189f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoIJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		BrazoIJB.Draw(lightingShader);
+		model = modelTemp2;
+		model = glm::translate(model, glm::vec3(0.091f, -0.219f, 0.167f));
+		model = glm::rotate(model, glm::radians(rotAntIJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		AntebrazoIJB.Draw(lightingShader);
 
+		model = modelTemp;
+		modelTemp2 = model = glm::translate(model, glm::vec3(0.112f, -0.380f, -0.085f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaDJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		PiernaDJB.Draw(lightingShader);
+		model = modelTemp2;
+		model = glm::translate(model, glm::vec3(-0.028f, -0.385f, -0.082f));
+		model = glm::rotate(model, glm::radians(rotPieDJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		PieDJB.Draw(lightingShader);
+
+		model = modelTemp;
+		modelTemp2 = model = glm::translate(model, glm::vec3(0.112f, -0.381f, 0.035f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaIJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		PiernaIJB.Draw(lightingShader);
+		model = modelTemp2;
+		model = glm::translate(model, glm::vec3(-0.027f, -0.384f, 0.121f));
+		model = glm::rotate(model, glm::radians(rotPieIJB), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		PieIJB.Draw(lightingShader);
 		glBindVertexArray(0);
 
 		// Activar el shader
@@ -495,16 +722,6 @@ int main()
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		// Draw the light object (using light's vertex attributes)
-		for (GLuint i = 0; i < 4; i++)
-		{
-			model = glm::mat4(1);
-			model = glm::translate(model, pointLightPositions[i]);
-			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
 		glBindVertexArray(0);
 
 		glfwSwapBuffers(window);
@@ -526,70 +743,30 @@ void DoMovement()
 	// Camera controls
 	if (keys[GLFW_KEY_W] || keys[GLFW_KEY_UP])
 	{
-		camera.ProcessKeyboard(FORWARD, deltaTime * 4);
+		camera.ProcessKeyboard(FORWARD, deltaTime * 3);
 
 	}
 
 	if (keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN])
 	{
-		camera.ProcessKeyboard(BACKWARD, deltaTime * 4);
+		camera.ProcessKeyboard(BACKWARD, deltaTime * 3);
 
 
 	}
 
 	if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT])
 	{
-		camera.ProcessKeyboard(LEFT, deltaTime * 4);
+		camera.ProcessKeyboard(LEFT, deltaTime * 3);
 
 
 	}
 
 	if (keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT])
 	{
-		camera.ProcessKeyboard(RIGHT, deltaTime * 4);
+		camera.ProcessKeyboard(RIGHT, deltaTime * 3);
 
 
 	}
-
-	if (keys[GLFW_KEY_T])
-	{
-		pointLightPositions[0].x += 0.01f;
-	}
-	if (keys[GLFW_KEY_G])
-	{
-		pointLightPositions[0].x -= 0.01f;
-	}
-
-	if (keys[GLFW_KEY_Y])
-	{
-		pointLightPositions[0].y += 0.01f;
-	}
-
-	if (keys[GLFW_KEY_H])
-	{
-		pointLightPositions[0].y -= 0.01f;
-	}
-	if (keys[GLFW_KEY_U])
-	{
-		pointLightPositions[0].z -= 0.1f;
-	}
-	if (keys[GLFW_KEY_J])
-	{
-		pointLightPositions[0].z += 0.01f;
-	}
-	if (keys[GLFW_KEY_M])
-	{
-		rotBrazos += 1.0f;
-	}
-	if (keys[GLFW_KEY_N])
-	{
-		rotPiernas += 1.0f;
-	}
-	if (keys[GLFW_KEY_B])
-	{
-		rotPiernas -= 1.0f;
-	}
-	
 	
 }
 
@@ -601,7 +778,6 @@ void animaNado() {
 				movNado.z += 0.01f;
 				rotCuerpo += 0.3f;
 				rotCuerpoX += 0.6f;
-				printf("%.3f\n", rotCuerpo);
 			}
 			else if (rotCuerpo > 360.0f) {
 				rotCuerpo = 0.0f;
@@ -611,7 +787,6 @@ void animaNado() {
 			else if (movNado.x > -18.0f && movNado.x < -15.0f) {
 				movNado.z -= 0.01f;
 				rotCuerpo += 0.3f;
-				printf("%.3f\n", rotCuerpo);
 			}
 			else if (movNado.x < -18.0f) {
 				delante = false;
@@ -624,12 +799,10 @@ void animaNado() {
 				movNado.z -= 0.01f;
 				rotCuerpo += 0.3f;
 				rotCuerpoX += 0.6f;
-				printf("%.3f\n", rotCuerpo);
 			}
 			else if (movNado.x > -2.0f && movNado.x < 1.0f) {
 				movNado.z += 0.01f;
 				rotCuerpo += 0.3f;
-				printf("%.3f\n", rotCuerpo);
 			}
 			else if (movNado.x > 1.0f) {
 				delante = true;
@@ -661,6 +834,26 @@ void animaNado() {
 // Is called whenever a key is pressed/released via GLFW
 void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode)
 {
+	if (keys[GLFW_KEY_L])
+	{
+		if (play == false && (FrameIndex > 1))
+		{
+			llenado(FrameIndex);
+			resetElements();
+			//First Interpolation				
+			interpolation();
+
+			play = true;
+			playIndex = 0;
+			i_curr_steps = 0;
+		}
+		else
+		{
+			play = false;
+		}
+
+	}
+
 	if (GLFW_KEY_ESCAPE == key && GLFW_PRESS == action)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -678,7 +871,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		}
 	}
 
-	if (keys[GLFW_KEY_L])
+	if (keys[GLFW_KEY_F])
 	{
 		if (nado == 0) {
 			nado = 1;
@@ -688,20 +881,6 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 		}
 	}
 
-	if (keys[GLFW_KEY_SPACE])
-	{
-		
-		//	active = !active;
-		//	if (active)
-		//	{
-		//		Light1 = glm::vec3(1.0f, 1.0f, 0.0f);
-		//	}
-		//	else
-		//	{
-		//		Light1 = glm::vec3(0);//Cuado es solo un valor en los 3 vectores pueden dejar solo una componente
-		//	}
-		//}
-	}
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)
@@ -720,4 +899,45 @@ void MouseCallback(GLFWwindow *window, double xPos, double yPos)
 	lastY = yPos;
 
 	camera.ProcessMouseMovement(xOffset, yOffset);
+}
+void Animation() {
+
+	if (play)
+	{
+		if (i_curr_steps >= i_max_steps) //end of animation between frames?
+		{
+			playIndex++;
+			if (playIndex > FrameIndex - 2)	//end of total animation?
+			{
+				playIndex = 0;
+				play = false;
+			}
+			else //Next frame interpolations
+			{
+				i_curr_steps = 0; //Reset counter
+				//Interpolation
+				interpolation();
+			}
+		}
+		else
+		{
+			//Draw animation
+			movJBX += KeyFrame[playIndex].incX;
+			movJBY += KeyFrame[playIndex].incY;
+			movBalonX += KeyFrame[playIndex].incBalonX;
+			movBalonY += KeyFrame[playIndex].incBalonY;
+			rotBrazoDJB += KeyFrame[playIndex].incRotBrazoDJB;
+			rotBrazoIJB += KeyFrame[playIndex].incRotBrazoIJB;
+			rotAntDJB += KeyFrame[playIndex].incRotAntDJB;
+			rotAntIJB += KeyFrame[playIndex].incRotAntIJB;
+			rotPiernaDJB += KeyFrame[playIndex].incRotPiernaDJB;
+			rotPieDJB += KeyFrame[playIndex].incRotPieDJB;
+			rotPiernaIJB += KeyFrame[playIndex].incRotPiernaIJB;
+			rotPieIJB += KeyFrame[playIndex].incRotPieIJB;
+
+
+			i_curr_steps++;
+		}
+
+	}
 }
