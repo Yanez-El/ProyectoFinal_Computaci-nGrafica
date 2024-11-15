@@ -202,19 +202,19 @@ int main()
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
 	Model Tsuru((char*)"Models/Models/Tsuru/Tsuru.obj");
-	Model Casita((char*)"Models/Models/Juegos/juegos.obj");
+	Model Casita((char*)"Models/Models/Casita/juegos.obj");
 
-	//Contenedor
-	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
-	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_hotel.obj");
-	Model pisos_hotel((char*)"Models/Models/pisos_hotel/pisos_hotel.obj");
+
+	Model cuerpo_hotel((char*)"Models/Models/cuerpo_hotel/cuerpo_casa.obj");
+	Model paredes_escaleras_pisos((char*)"Models/Models/paredes_escaleras_pisos/paredes_escaleras_pisos.obj");
 	Model muebles_baja((char*)"Models/Models/muebles_baja/muebles_baja.obj");
-	Model muebles_alta((char*)"Models/Models/muebles_alta/mueble_alta.obj");
-	Model cuartos_hotel((char*)"Models/Models/cuartos_hotel/cuartos_hotel.obj");
+	Model muebles_alta((char*)"Models/Models/muebles_alta/muebles_alta.obj");
+	Model muebles_techo((char*)"Models/Models/muebles_techo/muebles_techo.obj");
 
+	Model contenedor((char*)"Models/Models/contenedor/contenedores.obj");
+	Model muebles_contenedores((char*)"Models/Models/muebles_contenedores/muebles_contenedores.obj");
 	Model techos((char*)"Models/Models/Techos/techos.obj");
 	Model techoCentral((char*)"Models/Models/techo_central/techo_central.obj");
-	Model acapulco((char*)"Models/Models/acapulco/acapulco.obj");
 	Model sillones((char*)"Models/Models/sillones/sillones.obj");
 	Model mesas_pasillo((char*)"Models/Models/mesas/mesas_pasillo.obj");
 
@@ -382,19 +382,15 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	    Tsuru.Draw(lightingShader);
 		cuerpo_hotel.Draw(lightingShader);
-		pisos_hotel.Draw(lightingShader);
-		cuartos_hotel.Draw(lightingShader);
+		paredes_escaleras_pisos.Draw(lightingShader);
 		muebles_baja.Draw(lightingShader);
 		muebles_alta.Draw(lightingShader);
+		muebles_techo.Draw(lightingShader);
 		contenedor.Draw(lightingShader);
-		techos.Draw(lightingShader);
+		muebles_contenedores.Draw(lightingShader);
 		techoCentral.Draw(lightingShader);
-		acapulco.Draw(lightingShader);
 		sillones.Draw(lightingShader);
 		mesas_pasillo.Draw(lightingShader);
-		//mesas_amarillas.Draw(lightingShader);
-		//mesas_azules.Draw(lightingShader);
-		//mesas_verdes.Draw(lightingShader);
 		Alberca.Draw(lightingShader);
 		Casita.Draw(lightingShader);
 
