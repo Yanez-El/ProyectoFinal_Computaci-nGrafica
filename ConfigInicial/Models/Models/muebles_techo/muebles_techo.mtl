@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 14.11.2024 09:57:13
+# File Created: 15.11.2024 22:16:51
 
 newmtl hotel_Material__453
 	Kd 0.5880 0.5880 0.5880
@@ -14,5 +14,4 @@ newmtl hotel_Material__453
 	Ni 1.5000
 	Ke 0.0000 0.0000 0.0000
 	illum 2
-	map_Kd House_Albedo.jpg
-
+	map_Kd House_Albedo.png
