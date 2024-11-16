@@ -1,34 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
-# File Created: 14.11.2024 09:59:18
-
-newmtl Material__937
-	Ns 10.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 0.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.5880 0.5880 0.5880
-	Kd 0.5880 0.5880 0.5880
-	Ks 0.0000 0.0000 0.0000
-	Ke 0.0000 0.0000 0.0000
-	map_Ka madera_librero.jpg
-	map_Kd madera_librero.jpg
-
-
-newmtl Material__939
-	Ns 10.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 0.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.5880 0.5880 0.5880
-	Kd 0.5880 0.5880 0.5880
-	Ks 0.0000 0.0000 0.0000
-	Ke 0.0000 0.0000 0.0000
-	map_Ka colcha_blanca.jpg
-	map_Kd colcha_blanca.jpg
+# File Created: 15.11.2024 18:51:20
 
 newmtl Material__933
 	Ns 10.0000
@@ -44,6 +15,20 @@ newmtl Material__933
 	map_Ka madera_cama.jpg
 	map_Kd madera_cama.jpg
 
+newmtl Material__939
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka colcha_blanca.jpg
+	map_Kd colcha_blanca.jpg
+
 newmtl Material__938
 	Ns 10.0000
 	Ni 1.5000
@@ -58,7 +43,7 @@ newmtl Material__938
 	map_Ka verde.jpg
 	map_Kd verde.jpg
 
-newmtl Material__929
+newmtl Material__941
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000

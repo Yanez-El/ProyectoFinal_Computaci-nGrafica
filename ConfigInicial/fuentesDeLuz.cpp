@@ -87,6 +87,8 @@ float rotCuerpoX = 0.0f;
 float rotBrazos = 0.0f;
 float rotBrazoDJB = 0.0f;
 float rotBrazoIJB = 0.0f;
+float rotBrazoDN = 0.0f;
+float rotBrazoIN = 0.0f;
 float rotAntDJB = 0.0f;
 float rotAntIJB = 0.0f; 
 float rotPiernas = 0.0f;
@@ -94,6 +96,11 @@ float rotPiernaDJB = 0.0f;
 float rotPiernaIJB = 0.0f;
 float rotPieDJB = 0.0f;
 float rotPieIJB = 0.0f;
+float rotPiernaDN = 0.0f;
+float rotPiernaIN = 0.0f;
+float rotPieDN = 0.0f;
+float rotPieIN = 0.0f;
+
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
@@ -208,6 +215,7 @@ GLuint indices[] =
 
 //KeyFrames
 float movJBX, movJBY;
+float movNX, movNY;
 float movBalonX, movBalonY;
 
 #define MAX_FRAMES 20
@@ -254,38 +262,32 @@ int FrameIndexN = 0;		//introducir datos
 bool playN = false;
 int playIndexN = 0;
 
-//void saveFrame(FRAME KeyFrame[])
-//{
-//
-//	printf("frameindex %d\n", FrameIndexN);
-//
-//	KeyFrame[FrameIndexN].movJBX = movJBX;
-//	KeyFrame[FrameIndexN].movJBY = movJBY;
-//	KeyFrame[FrameIndexN].rotBrazoDJB = rotBrazoDJB;
-//	KeyFrame[FrameIndexN].rotBrazoIJB = rotBrazoIJB;
-//	KeyFrame[FrameIndexN].rotPiernaDJB = rotPiernaDJB;
-//	KeyFrame[FrameIndexN].rotPieDJB = rotPieDJB;
-//	KeyFrame[FrameIndexN].rotPiernaIJB = rotPiernaIJB;
-//	KeyFrame[FrameIndexN].rotPieIJB = rotPieIJB;
-//
-//
-//	FrameIndexN++;
-//}
-
-void resetElements(FRAME KeyFrame[])
+void resetElements(FRAME KeyFrame[], int opcion)
 {
-	movJBX = KeyFrame[0].movJBX;
-	movJBY = KeyFrame[0].movJBY;
-	movBalonX = KeyFrame[0].movBalonX;
-	movBalonY = KeyFrame[0].movBalonY;
-	rotBrazoDJB = KeyFrame[0].rotBrazoDJB;
-	rotBrazoIJB = KeyFrame[0].rotBrazoIJB;
-	rotAntDJB = KeyFrame[0].rotAntDJB;
-	rotAntIJB = KeyFrame[0].rotAntIJB;
-	rotPiernaDJB = KeyFrame[0].rotPiernaDJB;
-	rotPieDJB = KeyFrame[0].rotPieDJB;
-	rotPiernaIJB = KeyFrame[0].rotPiernaIJB;
-	rotPieIJB = KeyFrame[0].rotPieIJB;
+	if (opcion == 1) {
+		movJBX = KeyFrame[0].movJBX;
+		movJBY = KeyFrame[0].movJBY;
+		movBalonX = KeyFrame[0].movBalonX;
+		movBalonY = KeyFrame[0].movBalonY;
+		rotBrazoDJB = KeyFrame[0].rotBrazoDJB;
+		rotBrazoIJB = KeyFrame[0].rotBrazoIJB;
+		rotAntDJB = KeyFrame[0].rotAntDJB;
+		rotAntIJB = KeyFrame[0].rotAntIJB;
+		rotPiernaDJB = KeyFrame[0].rotPiernaDJB;
+		rotPieDJB = KeyFrame[0].rotPieDJB;
+		rotPiernaIJB = KeyFrame[0].rotPiernaIJB;
+		rotPieIJB = KeyFrame[0].rotPieIJB;
+	}
+	else if (opcion == 2){
+		movNX = KeyFrame[0].movJBX;
+		movNY = KeyFrame[0].movJBY;
+		rotBrazoDN = KeyFrame[0].rotBrazoDJB;
+		rotBrazoIN = KeyFrame[0].rotBrazoIJB;
+		rotPiernaDN = KeyFrame[0].rotPiernaDJB;
+		rotPieDN = KeyFrame[0].rotPieDJB;
+		rotPiernaIN = KeyFrame[0].rotPiernaIJB;
+		rotPieIN = KeyFrame[0].rotPieIJB;
+	}
 
 }
 void interpolation(FRAME KeyFrame[], int playIndex)
@@ -400,20 +402,6 @@ void existeGuardado(void) {
 		FrameIndexN = (datos2.size() / 8);
 	}
 }
-//void llenado(int maximo) {
-//	ofstream Creado("animacion2.txt");
-//	for (int i = 0; i < maximo; ++i) {
-//		Creado << KeyFrameN[i].movJBX << endl;
-//		Creado << KeyFrameN[i].movJBY << endl;
-//		Creado << KeyFrameN[i].rotBrazoDJB << endl;
-//		Creado << KeyFrameN[i].rotBrazoIJB << endl;
-//		Creado << KeyFrameN[i].rotPiernaDJB << endl;
-//		Creado << KeyFrameN[i].rotPiernaIJB << endl;
-//		Creado << KeyFrameN[i].rotPieDJB << endl;
-//		Creado << KeyFrameN[i].rotPieIJB << endl;
-//	}
-//	Creado.close();
-//}
 
 
 glm::vec3 Light1 = glm::vec3(0);
@@ -499,6 +487,8 @@ int main()
 	Model PieDJB((char*)"Models/Models/jugadorBasket/PieDJB.obj");
 	Model PieIJB((char*)"Models/Models/jugadorBasket/PieIJB.obj");
 	Model Estacionamientos((char*)"Models/Models/Estacionamientos/estacionamientos.obj");
+	Model Mustango((char*)"Models/Models/Mustang/Mustango.obj");
+	Model Tesla((char*)"Models/Models/Tesla/Tesla.obj");
 	Model RejaFut((char*)"Models/Models/RejaCanchaF/rejaFut.obj");
 	Model RejaBask((char*)"Models/Models/rejaBask/rejaBask.obj");
 	Model Casita((char*)"Models/Models/Casita/juegos.obj");
@@ -821,12 +811,10 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Piso.Draw(lightingShader);
 		PisoBask.Draw(lightingShader);
-		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
 		Canastas.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
-		if (play) {
-			model = glm::translate(model, glm::vec3(movBalonX, movBalonY, 0.0f));
-		}
+		model = glm::translate(model, glm::vec3(movBalonX, movBalonY, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BalonB.Draw(lightingShader);
 		model = glm::mat4(1);
@@ -835,6 +823,9 @@ int main()
 		PisoFut.Draw(lightingShader);
 		Porterias.Draw(lightingShader);
 		Estacionamientos.Draw(lightingShader);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
+		Mustango.Draw(lightingShader);
+		Tesla.Draw(lightingShader);
 
 
 		model = glm::mat4(1);
@@ -860,39 +851,40 @@ int main()
 		//Modelo del niño
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		modelTemp = model = glm::translate(model, glm::vec3(-7.24f, 1.44f, -4.991f));
-		modelTemp = model = glm::translate(model, glm::vec3(0.0f, movJBX, movJBY));
+		modelTemp = model = glm::translate(model, glm::vec3(0.0f, movNX, movNY));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		CuerpoNino.Draw(lightingShader);
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(0.192f, 0.159f, 0.0f));
-		model = glm::rotate(model, glm::radians(rotBrazoDJB), glm::vec3(1.0f, 0.0f, 0.0));
+		model = glm::rotate(model, glm::radians(rotBrazoDN), glm::vec3(1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BrazoDN.Draw(lightingShader);
 		model = modelTemp;
 		model = glm::translate(model, glm::vec3(-0.188f, 0.205f, 0.0f));
-		model = glm::rotate(model, glm::radians(rotBrazoIJB), glm::vec3(1.0f, 0.0f, 0.0));
+		model = glm::rotate(model, glm::radians(rotBrazoIN), glm::vec3(1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BrazoIN.Draw(lightingShader);
 
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(0.109f, -0.51f, 0.0f));
-		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaDJB), glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaDN), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PiernaDN.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(-0.015f, -0.43f, 0.0f));
-		model = glm::rotate(model, glm::radians(rotPieDJB), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotPieDN), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PieDN.Draw(lightingShader);
 
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(-0.136f, -0.51f, 0.0f));
-		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaIJB), glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaIN), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PiernaIN.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(0.032f, -0.43f, 0.0f));
-		model = glm::rotate(model, glm::radians(rotPieIJB), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotPieIN), glm::vec3(1.0f, 0.0f, 0.0f));
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PieIN.Draw(lightingShader);
 
@@ -928,67 +920,49 @@ int main()
 		model = glm::mat4(1);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		modelTemp = model = glm::translate(model, glm::vec3(-51.384f, 1.307f, 40.716f));
-		if (play) {
-			modelTemp = model = glm::translate(model, glm::vec3(movJBX, movJBY, 0.0f));
-		}
+		modelTemp = model = glm::translate(model, glm::vec3(movJBX, movJBY, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		CuerpoJB.Draw(lightingShader);
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(0.028f, 0.181f, -0.196f));
-		if (play) {
-			modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoDJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoDJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BrazoDJB.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(0.091f, -0.219f, -0.191f));
-		if (play) {
-			model = glm::rotate(model, glm::radians(rotAntDJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		model = glm::rotate(model, glm::radians(rotAntDJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		AntebrazoDJB.Draw(lightingShader);
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(0.028f, 0.180f, 0.189f));
-		if (play) {
-			modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoIJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotBrazoIJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		BrazoIJB.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(0.091f, -0.219f, 0.167f));
-		if (play) {
-			model = glm::rotate(model, glm::radians(rotAntIJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		model = glm::rotate(model, glm::radians(rotAntIJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		AntebrazoIJB.Draw(lightingShader);
 
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(0.112f, -0.380f, -0.085f));
-		if (play) {
-			modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaDJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaDJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PiernaDJB.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(-0.028f, -0.385f, -0.082f));
-		if (play) {
-			model = glm::rotate(model, glm::radians(rotPieDJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		model = glm::rotate(model, glm::radians(rotPieDJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PieDJB.Draw(lightingShader);
 
 		model = modelTemp;
 		modelTemp2 = model = glm::translate(model, glm::vec3(0.112f, -0.381f, 0.035f));
-		if (play) {
-			modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaIJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		modelTemp2 = model = glm::rotate(model, glm::radians(rotPiernaIJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PiernaIJB.Draw(lightingShader);
 		model = modelTemp2;
 		model = glm::translate(model, glm::vec3(-0.027f, -0.384f, 0.121f));
-		if (play) {
-			model = glm::rotate(model, glm::radians(rotPieIJB), glm::vec3(0.0f, 0.0f, 1.0f));
-		}
+		model = glm::rotate(model, glm::radians(rotPieIJB), glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		PieIJB.Draw(lightingShader);
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
@@ -1095,71 +1069,6 @@ void DoMovement()
 
 
 	}
-
-	//if (keys[GLFW_KEY_1])
-	//{
-	//	movJBX += 0.05f;
-	//}
-	//if (keys[GLFW_KEY_2])
-	//{
-	//	movJBX -= 0.05f;
-	//}
-	//if (keys[GLFW_KEY_3])
-	//{
-	//	movJBY += 0.05f;
-	//}
-	//if (keys[GLFW_KEY_4])
-	//{
-	//	movJBY -= 0.05f;
-	//}
-	//if (keys[GLFW_KEY_5])
-	//{
-	//	rotBrazoDJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_6])
-	//{
-	//	rotBrazoDJB -= 1.0f;
-	//}
-	//if (keys[GLFW_KEY_7])
-	//{
-	//	rotBrazoIJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_8])
-	//{
-	//	rotBrazoIJB -= 1.0f;
-	//}
-	//if (keys[GLFW_KEY_R])
-	//{
-	//	rotPiernaDJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_T])
-	//{
-	//	rotPiernaDJB -= 1.0f;
-	//}
-	//if (keys[GLFW_KEY_Y])
-	//{
-	//	rotPiernaIJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_U])
-	//{
-	//	rotPiernaIJB -= 1.0f;
-	//}
-	//if (keys[GLFW_KEY_C])
-	//{
-	//	rotPieDJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_V])
-	//{
-	//	rotPieDJB -= 1.0f;
-	//}
-	//if (keys[GLFW_KEY_G])
-	//{
-	//	rotPieIJB += 1.0f;
-	//}
-	//if (keys[GLFW_KEY_H])
-	//{
-	//	rotPieIJB -= 1.0f;
-	//}
 }
 
 void animaNado() {
@@ -1230,7 +1139,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	{
 		if (play == false && (FrameIndex > 1))
 		{
-			resetElements(KeyFrame);
+			resetElements(KeyFrame, 1);
 			//First Interpolation				
 			interpolation(KeyFrame, playIndex);
 
@@ -1247,21 +1156,12 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 
 	}
 
-	//if (keys[GLFW_KEY_K])
-	//{
-	//	if (FrameIndexN < MAX_FRAMES)
-	//	{
-	//		saveFrame(KeyFrameN);
-	//	}
-
-	//}
-
 	if (keys[GLFW_KEY_N])
 	{
 		if (playN == false && (FrameIndexN > 1))
 		{
 			/*llenado(FrameIndexN);*/
-			resetElements(KeyFrameN);
+			resetElements(KeyFrameN, 2);
 			//First Interpolation				
 			interpolation(KeyFrameN, playIndexN);
 
@@ -1374,7 +1274,6 @@ void Animation2() {
 			playIndexN++;
 			if (playIndexN > FrameIndexN - 2)	//end of total animation?
 			{
-				printf("termina anim\n");
 				playIndexN = 0;
 				playN = false;
 			}
@@ -1388,14 +1287,14 @@ void Animation2() {
 		else
 		{
 			//Draw animation
-			movJBX += KeyFrameN[playIndexN].incX;
-			movJBY += KeyFrameN[playIndexN].incY;
-			rotBrazoDJB += KeyFrameN[playIndexN].incRotBrazoDJB;
-			rotBrazoIJB += KeyFrameN[playIndexN].incRotBrazoIJB;
-			rotPiernaDJB += KeyFrameN[playIndexN].incRotPiernaDJB;
-			rotPieDJB += KeyFrameN[playIndexN].incRotPieDJB;
-			rotPiernaIJB += KeyFrameN[playIndexN].incRotPiernaIJB;
-			rotPieIJB += KeyFrameN[playIndexN].incRotPieIJB;
+			movNX += KeyFrameN[playIndexN].incX;
+			movNY += KeyFrameN[playIndexN].incY;
+			rotBrazoDN += KeyFrameN[playIndexN].incRotBrazoDJB;
+			rotBrazoIN += KeyFrameN[playIndexN].incRotBrazoIJB;
+			rotPiernaDN += KeyFrameN[playIndexN].incRotPiernaDJB;
+			rotPieDN += KeyFrameN[playIndexN].incRotPieDJB;
+			rotPiernaIN += KeyFrameN[playIndexN].incRotPiernaIJB;
+			rotPieIN += KeyFrameN[playIndexN].incRotPieIJB;
 
 
 			i_curr_steps++;
