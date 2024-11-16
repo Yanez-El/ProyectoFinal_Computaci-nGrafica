@@ -15,6 +15,7 @@ newmtl Material__937
 	map_Ka madera_librero.jpg
 	map_Kd madera_librero.jpg
 
+
 newmtl Material__939
 	Ns 10.0000
 	Ni 1.5000
