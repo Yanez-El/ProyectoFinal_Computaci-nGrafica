@@ -1,6 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
 # File Created: 15.11.2024 21:46:18
 
+
 newmtl Material__1023
 	Ns 10.0000
 	Ni 1.5000
@@ -15,7 +16,7 @@ newmtl Material__1023
 	map_Ka piso.jpg
 	map_Kd piso.jpg
 
-newmtl Material__1028
+newmtl Material__939
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -29,7 +30,7 @@ newmtl Material__1028
 	map_Ka madera_librero.jpg
 	map_Kd madera_librero.jpg
 
-newmtl Material__1025
+newmtl Material__1021
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -57,7 +58,7 @@ newmtl Material__1022
 	map_Ka marmol_recepcion.jpg
 	map_Kd marmol_recepcion.jpg
 
-newmtl Material__1026
+newmtl Material__1024
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
